@@ -1,4 +1,5 @@
 # Tasties
+![WhatsApp Image 2022-11-16 at 5 32 47 PM](https://user-images.githubusercontent.com/81830917/202234557-2cdf76cb-fba4-48c9-8e96-b1e094b685cb.jpeg)
 
 ### Introduction
 Welcome to Tasties! We're creating an open-source platform where people can share and discover recipes,
