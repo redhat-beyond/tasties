@@ -17,5 +17,5 @@ as well as by the ingredients that they call for.
 ### Contributing to Tasties
 See our CONTRIBUTING.md file for information on how you can contribute.
 
-### License :
+### License
 MIT basic license.
