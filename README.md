@@ -1,5 +1,5 @@
 # Tasties
-![tasties](https://github.com/WaseemAbuSobe/tasties/blob/flake8/static/images/tasties_logo.png)
+![tasties](./static/images/tasties_logo_round.png)
 
 ### Introduction
 Welcome to Tasties! We're creating an open-source platform where people can share and discover recipes,
