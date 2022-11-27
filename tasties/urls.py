@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from webpage import views
+from tasties_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.index,name="index")
+    path('', views.index, name="index")
 ]
