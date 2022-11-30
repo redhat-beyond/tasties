@@ -15,3 +15,7 @@ pipenv sync --dev
 # The app logs are redirected to the `runserver.log` file.
 (setsid pipenv run \
     python manage.py runserver 0.0.0.0:8000 > runserver.log 2>&1 &)
+
+# Migrations
+pipenv run python manage.py makemigrations tasties_app
+pipenv run python manage.py migrate
