@@ -14,9 +14,20 @@ class Recipe(models.Model):
     categories = models.ManyToManyField(Category)
     description = models.CharField(max_length=512, validators=[MinLengthValidator(1)])
     directions = models.CharField(max_length=65536, validators=[MinLengthValidator(1)])
-    publication_date = models.DateField(default=timezone.now)
+    publication_date = models.DateTimeField(auto_now_add=timezone.now())
     minutes_to_make = models.IntegerField(validators=[MinValueValidator(1)])
     recipe_picture = models.ImageField(upload_to='recipe_pictures')
+
+    def edit_recipe(self, title, description, directions, minutes_to_make, recipe_pic):
+        self.title = title
+        self.description = description
+        self.directions = directions
+        self.minutes_to_make = minutes_to_make
+        self.recipe_picture = recipe_pic
+        self.save()
+
+    def delete_recipe(self):
+        self.delete()
 
 
 class Ingredient(models.Model):
