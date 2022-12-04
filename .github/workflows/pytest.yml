@@ -12,5 +12,9 @@ jobs:
       uses: actions/checkout@v2
     - name: Steup environment
       run: pipenv sync --dev
+    - name: Create migrations
+      run: pipenv run python manage.py makemigrations
+    - name: Migrate
+      run: pipenv run python manage.py migrate
     - name: Run PyTest
       run: pipenv run pytest -v
