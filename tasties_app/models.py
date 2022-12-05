@@ -10,7 +10,10 @@ class Category(models.Model):
 
 class Recipe(models.Model):
     """
+<<<<<<< HEAD
 
+=======
+>>>>>>> a51488b (Update Recipe model.)
     This class represent Recipe object
 
     Fields:
@@ -24,7 +27,13 @@ class Recipe(models.Model):
         recipe_picture (Image) : A picture that describes the recipe.
 
     """
+<<<<<<< HEAD
     title = models.CharField(max_length=64, validators=[MinLengthValidator(1)], unique=True)
+=======
+    title = models.CharField(
+        max_length=64, validators=[MinLengthValidator(1)], unique=True
+    )
+>>>>>>> a51488b (Update Recipe model.)
     author_id = models.ForeignKey(User, on_delete=models.CASCADE)
     categories = models.ManyToManyField(Category)
     description = models.CharField(max_length=512, validators=[MinLengthValidator(1)])
@@ -51,6 +60,47 @@ class Recipe(models.Model):
         self.description = new_description
         self.directions = new_directions
         self.minutes_to_make = new_minutes_to_make
+        self.recipe_picture = new_recipe_pic
+        self.save()
+
+    def edit_recipe(self, new_title, new_description,
+                    new_directions, new_minutes_to_make,
+                    new_recipe_pic):
+        """
+        This function designed to allow the user to edit his recipe.
+
+        Fields:
+            new_title (string) : The new given title to the recipe.
+            new_description (string) : The new or edited recipe description
+                                        given to the recipe.
+            new_directions (string) : The new or edited directions given to the recipe.
+            new_minutes_to_make (int) : The updating the preparation time of the recipe.
+            new_recipe_pic (Image) : The new picture that describes the recipe.
+        """
+        # Checks if the new title is at least one length.
+        if (len(new_title) >= 1):
+            self.title = new_title
+        else:
+            raise ValueError("Invalid value")
+
+        # Check if the new description is at least one length.
+        if (len(new_description) >= 1):
+            self.description = new_description
+        else:
+            raise ValueError("Invalid value")
+
+        # Check if the new directions is at least one length.
+        if (len(new_directions) >= 1):
+            self.directions = new_directions
+        else:
+            raise ValueError("Invalid value")
+
+        # Check if the new minutes to make is integer and if it is at least one minutes.
+        if ((type(new_minutes_to_make) == int) and (new_minutes_to_make >= 1)):
+            self.minutes_to_make = new_minutes_to_make
+        else:
+            raise ValueError("Invalid value")
+
         self.recipe_picture = new_recipe_pic
         self.save()
 

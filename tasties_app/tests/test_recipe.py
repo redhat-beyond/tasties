@@ -5,9 +5,17 @@ from django.contrib.auth.models import User
 
 
 @pytest.fixture
+<<<<<<< HEAD
 def generate_data():
     """This fixture create the data we need for tests
     and save it in the data base. """
+=======
+def recipe():
+    """
+        This fixture create the data we need for tests
+        and save it in the data base.
+    """
+>>>>>>> a51488b (Update Recipe model.)
 
     user1 = User.objects.create_user(username='john', password='password')
 
@@ -22,6 +30,7 @@ def generate_data():
     recipe1.categories.add(category1)
     recipe1.save()
     category1.save()
+<<<<<<< HEAD
 
 
 class TestRecipeModel:
@@ -33,6 +42,22 @@ class TestRecipeModel:
 
     @pytest.mark.django_db
     def test_field_recipe(self, generate_data):
+=======
+    return recipe1
+
+
+class TestRecipeModel:
+    """
+        This class test the recipe model and the method.
+    """
+
+    @pytest.mark.django_db
+    def test_save_recipe(self, recipe):
+        assert recipe in Recipe.objects.all()
+
+    @pytest.mark.django_db
+    def test_field_recipe(self, recipe):
+>>>>>>> a51488b (Update Recipe model.)
         recipe_set = Recipe.objects.all()
         recipe1 = recipe_set[0]
         category1 = Category.objects.first()
@@ -45,6 +70,7 @@ class TestRecipeModel:
         assert recipe1.recipe_picture == "test_picture1"
 
     @pytest.mark.django_db
+<<<<<<< HEAD
     def test_edit_recipe(self, generate_data):
         recipe_set = Recipe.objects.all()
         recipe1 = recipe_set[0]
@@ -57,6 +83,26 @@ class TestRecipeModel:
 
     @pytest.mark.django_db
     def test_delete_recipe(self, generate_data):
+=======
+    def test_edit_recipe(self, recipe):
+        recipe.edit_recipe("Test Recipe2", "Test Description2", "Test Directions2", 5, "test_picture2")
+        assert recipe.title == "Test Recipe2"
+        assert recipe.description == "Test Description2"
+        assert recipe.directions == "Test Directions2"
+        assert recipe.minutes_to_make == 5
+        assert recipe.recipe_picture == "test_picture2"
+
+    @pytest.mark.django_db
+    def test_invalid_edit(self, recipe):
+        """
+            Check that we can't edit a recipe with wrong minutes parameter.
+        """
+        with pytest.raises(Exception):
+            recipe.edit_recipe("Test Recipe2", "Test Description2", "Test Directions2", -1, "test_picture2")
+
+    @pytest.mark.django_db
+    def test_delete_recipe(self, recipe):
+>>>>>>> a51488b (Update Recipe model.)
         recipe_set = Recipe.objects.all()
         recipe1 = recipe_set[0]
         recipe1.delete()
