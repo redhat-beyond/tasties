@@ -17,7 +17,8 @@ def recipe():
     category1 = Category.objects.create(category_name="1")
     recipe1 = Recipe(title=test_data[0], author_id=test_data[1], description=test_data[2], directions=test_data[3],
                      publication_date=timezone.now(), minutes_to_make=test_data[4], recipe_picture=test_data[5])
-
+    recipe1.full_clean()
+    category1.full_clean()
     category1.save()
     recipe1.save()
     recipe1.categories.add(category1)
@@ -36,10 +37,9 @@ class TestRecipeModel:
         assert recipe in Recipe.objects.all()
 
     @pytest.mark.django_db
-    def test_field_recipe(self, recipe):
-        recipe_set = Recipe.objects.all()
-        recipe1 = recipe_set[0]
-        category1 = Category.objects.first()
+    def test_recipe_fields(self, recipe):
+        recipe1 = Recipe.objects.filter(author_id=recipe.author_id)[0]
+        category1 = Category.objects.filter(category_name="1")[0]
         assert recipe1.title == "Test Recipe1"
         assert recipe1.author_id.username == "john"
         assert category1.category_name == "1"
@@ -49,25 +49,38 @@ class TestRecipeModel:
         assert recipe1.recipe_picture == "test_picture1"
 
     @pytest.mark.django_db
-    def test_edit_recipe(self, recipe):
-        recipe.edit_recipe("Test Recipe2", "Test Description2", "Test Directions2", 5, "test_picture2")
-        assert recipe.title == "Test Recipe2"
-        assert recipe.description == "Test Description2"
-        assert recipe.directions == "Test Directions2"
-        assert recipe.minutes_to_make == 5
-        assert recipe.recipe_picture == "test_picture2"
-
-    @pytest.mark.django_db
-    def test_invalid_edit(self, recipe):
-        """
-            Check that we can't edit a recipe with wrong minutes parameter.
-        """
-        with pytest.raises(Exception):
-            recipe.edit_recipe("Test Recipe2", "Test Description2", "Test Directions2", -1, "test_picture2")
-
-    @pytest.mark.django_db
     def test_delete_recipe(self, recipe):
-        recipe_set = Recipe.objects.all()
-        recipe1 = recipe_set[0]
-        recipe1.delete()
-        assert len(recipe_set) == 0
+        recipe.delete()
+        assert len(Recipe.objects.all()) == 0
+
+    @pytest.mark.django_db
+    def test_str_function(self, recipe):
+        assert recipe.__str__() == "john 1 Test Recipe1 Test Description1 Test Directions1 1 test_picture1"
+
+    @pytest.mark.django_db
+    def test_invalid_title(self, recipe):
+        recipe1 = Recipe.objects.filter(author_id=recipe.author_id)
+        recipe1.update(title="")
+        with pytest.raises(Exception):
+            recipe1[0].full_clean()
+
+    @pytest.mark.django_db
+    def test_invalid_description(self, recipe):
+        recipe1 = Recipe.objects.filter(author_id=recipe.author_id)
+        recipe1.update(description="")
+        with pytest.raises(Exception):
+            recipe1[0].full_clean()
+
+    @pytest.mark.django_db
+    def test_invalid_directions(self, recipe):
+        recipe1 = Recipe.objects.filter(author_id=recipe.author_id)
+        recipe1.update(directions="")
+        with pytest.raises(Exception):
+            recipe1[0].full_clean()
+
+    @pytest.mark.django_db
+    def test_invalid_minutes_to_make(self, recipe):
+        recipe1 = Recipe.objects.filter(author_id=recipe.author_id)
+        recipe1.update(minutes_to_make=0)
+        with pytest.raises(Exception):
+            recipe1[0].full_clean()

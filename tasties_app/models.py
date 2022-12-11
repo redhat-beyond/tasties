@@ -13,6 +13,9 @@ from django.utils import timezone
 class Category(models.Model):
     category_name = models.CharField(max_length=16, unique=True)
 
+    def __str__(self):
+        return self.category_name
+
 
 class Recipe(models.Model):
     """
@@ -38,45 +41,13 @@ class Recipe(models.Model):
     minutes_to_make = models.IntegerField(validators=[MinValueValidator(1)])
     recipe_picture = models.ImageField(upload_to="recipe_pictures")
 
-    def edit_recipe(self, new_title, new_description,
-                    new_directions, new_minutes_to_make,
-                    new_recipe_pic):
-        """
-        This function designed to allow the user to edit his recipe.
-        Fields:
-            new_title (string) : The new given title to the recipe.
-            new_description (string) : The new or edited recipe description
-                                        given to the recipe.
-            new_directions (string) : The new or edited directions given to the recipe.
-            new_minutes_to_make (int) : The updating the preparation time of the recipe.
-            new_recipe_pic (Image) : The new picture that describes the recipe.
-        """
-        # Checks if the new title is at least one length.
-        if (len(new_title) >= 1):
-            self.title = new_title
-        else:
-            raise ValueError("Invalid value")
-
-        # Check if the new description is at least one length.
-        if (len(new_description) >= 1):
-            self.description = new_description
-        else:
-            raise ValueError("Invalid value")
-
-        # Check if the new directions is at least one length.
-        if (len(new_directions) >= 1):
-            self.directions = new_directions
-        else:
-            raise ValueError("Invalid value")
-
-        # Check if the new minutes to make is integer and if it is at least one minutes.
-        if ((type(new_minutes_to_make) == int) and (new_minutes_to_make >= 1)):
-            self.minutes_to_make = new_minutes_to_make
-        else:
-            raise ValueError("Invalid value")
-
-        self.recipe_picture = new_recipe_pic
-        self.save()
+    def __str__(self):
+        user_name = self.author_id.username
+        string_categories = ""
+        for i in self.categories.all():
+            string_categories = string_categories + str(i)
+        return user_name + " " + string_categories + " " + self.title + " " + self.description + " " + self.directions \
+            + " " + str(self.minutes_to_make) + " " + self.recipe_picture.__str__()
 
 
 class Ingredient(models.Model):
