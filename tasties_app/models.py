@@ -15,6 +15,18 @@ class Category(models.Model):
 
 
 class Recipe(models.Model):
+    """
+    This class represent Recipe object
+    Fields:
+        title (string) : Title of the recipe.
+        author_id (User) : User object.
+        categories (Categories) : Categories object.
+        description (string) : Description of the recipe.
+        directions (string) : Directions how to make the recipe.
+        publication_date (DateTime) : When was the recipe published.
+        minutes_to_make (int) : How long does it take to make the recipe.
+        recipe_picture (Image) : A picture that describes the recipe.
+    """
     title = models.CharField(
         max_length=64, validators=[MinLengthValidator(1)], unique=True
     )
@@ -25,6 +37,9 @@ class Recipe(models.Model):
     publication_date = models.DateField(default=timezone.now)
     minutes_to_make = models.IntegerField(validators=[MinValueValidator(1)])
     recipe_picture = models.ImageField(upload_to="recipe_pictures")
+
+    def __str__(self):
+        return self.title
 
 
 class Ingredient(models.Model):
