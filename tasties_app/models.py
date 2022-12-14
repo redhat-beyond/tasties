@@ -28,6 +28,15 @@ class Recipe(models.Model):
 
 
 class Ingredient(models.Model):
+    """
+    Ingredient Model - represents an ingredient in a recipe.
+    Fields:
+        UNIT_CHOICES - a list of valid measurement units
+        recipe_id - the recipe that the ingredient belongs to
+        amount - the amount of the ingredient
+        measurement_unit - the unit of measurement for the ingredient
+        description - a description of the ingredient
+    """
     class UnitChoices(models.TextChoices, Enum):
         WHOLE = "Whole"
         FLOZ = "Fluid Ounce"
@@ -45,6 +54,9 @@ class Ingredient(models.Model):
         max_length=11, choices=UnitChoices.choices, default=UnitChoices.WHOLE
     )
     description = models.CharField(max_length=64, validators=[MinLengthValidator(1)])
+
+    def __str__(self):
+        return str(self.amount) + " " + self.measurement_unit + " " + self.description
 
 
 class Comment(models.Model):
