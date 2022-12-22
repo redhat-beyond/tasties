@@ -11,7 +11,32 @@ from django.utils import timezone
 
 
 class Category(models.Model):
-    category_name = models.CharField(max_length=16, unique=True)
+    """
+    Category Model - represents a recipe category.
+    Fields:
+        category_name - category name
+    """
+    category_name = models.CharField(max_length=16, validators=[MinLengthValidator(1)], unique=True)
+
+    def __str__(self):
+        return self.category_name
+
+    @staticmethod
+    def get_recipes_by_category(category):
+        """
+        Returns a QuerySet of Recipes tagged with this Category
+
+        Args:
+            category (Category): Category object
+
+        Returns:
+            QuerySet: QuerySet of Recipes containing given Category.
+                      If invalid parameter is given (not of type Category), returns
+                      empty QuerySet.
+        """
+        if not isinstance(category, Category):
+            return Recipe.objects.none()
+        return Recipe.objects.filter(categories__id=category.id)
 
 
 class Recipe(models.Model):
