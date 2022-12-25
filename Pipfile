@@ -8,6 +8,7 @@ django = "*"
 pytest = "*"
 pytest-django = "*"
 pillow = "*"
+django-bootstrap-icons = "*"
 
 [dev-packages]
 flake8 = "*"
