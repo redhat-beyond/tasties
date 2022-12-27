@@ -3,7 +3,7 @@
 # fails while the -x option makes verbosely it output what it does
 
 # Install Pipenv, the -n option makes sudo fail instead of asking for a
-# password if we don’t have sufficient privileges to run it
+# password if we don't have sufficient privileges to run it
 sudo -n dnf install -y pipenv
 
 cd /vagrant

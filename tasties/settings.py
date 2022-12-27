@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'tasties_app.apps.TastiesAppConfig',
+    'django_bootstrap_icons',
 ]
 
 MIDDLEWARE = [
