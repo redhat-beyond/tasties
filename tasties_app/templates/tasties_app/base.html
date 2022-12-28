@@ -1,0 +1,92 @@
+{% load static %} {% load bootstrap_icons %}
+<!DOCTYPE html>
+<html lang="en">
+  <!----------------------------------------------------- HEAD ------------------------------------------------------->
+  <head>
+    <!-- Settings: -->
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Style: -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}" />
+    {% block css %}{% endblock %}
+
+    <!-- Name and Description: -->
+    <meta name="description" content="tasties is a platform to share food recipes" />
+    <title>tasties</title>
+  </head>
+  <!----------------------------------------------------- BODY ------------------------------------------------------->
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-light bg-light">
+
+      <!-- Logo -->
+      <a class="navbar-brand" id="logo" href="{% url 'index' %}">
+        <img
+          src="{% static 'images/logo.png' %}"
+          class="d-inline-block align-top"
+          alt="tasties-logo"
+        />
+        <strong>tasties</strong>
+      </a>
+
+      {% if user.is_authenticated %}
+          <!-- Search -->
+          <div class="form-group">
+            <span class="input-group-append">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search"
+                id="search"
+              />
+              <button
+                class="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
+                id="search-button"
+              >
+                {% bs_icon 'search' %}
+              </button>
+            </span>
+          </div>
+
+          <!-- Profile -->
+          <div class="dropdown">
+            <button
+              class="btn btn-disabled dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+            >
+              {% bs_icon 'person-fill' %} Hello, {{ user.username }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="#">Add recipe</a>
+              <a class="dropdown-item" href="#">Logout</a>
+            </div>
+          </div>
+
+      {% else %}
+          <span> Welcome, guest</span>
+      {% endif %}
+    </nav>
+
+    <!-- Main content -->
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    <div class="footer flex-container bg-light fixed-bottom" id="footer">
+      <p>tasties © 2022</p>
+    </div>
+  </body>
+</html>
