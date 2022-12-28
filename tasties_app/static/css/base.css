@@ -1,0 +1,30 @@
+nav{
+    display: flex;
+    align-content: space-between;
+    border-bottom: rgb(234, 234, 234) 1px solid;
+}
+
+#search{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    margin-left: 50px;
+}
+
+#search-button:hover{
+    color: black;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    padding: 5px 20px 0px;
+    border-top: rgb(234, 234, 234) 1px solid;
+}
