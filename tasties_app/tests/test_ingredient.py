@@ -1,8 +1,7 @@
 import pytest as pytest
-
-from tasties_app.models import Ingredient, Recipe, Category
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from tasties_app.models import Category, Ingredient, Recipe
 
 
 @pytest.fixture
@@ -12,15 +11,25 @@ def ingredient():
     and adds them to the database.
     returns: ingredient
     """
-    user1 = User.objects.create_user('test_user', 'password')
-    category = Category.objects.create(category_name='Breakfast')
+    user1 = User.objects.create_user("test_user", "password")
+    category = Category.objects.create(category_name="1")
     category.save()
-    recipe = Recipe(title='Test Recipe1', author_id=user1, description='Test Description1',
-                    directions='Test Directions1', minutes_to_make=1, recipe_picture='test_picture1')
+    recipe = Recipe(
+        title="Test Recipe1",
+        author_id=user1,
+        description="Test Description1",
+        directions="Test Directions1",
+        minutes_to_make=1,
+        recipe_picture="test_picture1",
+    )
     recipe.save()
     recipe.categories.add(category)
-    ingredient = Ingredient(recipe_id=recipe, amount=1.0, measurement_unit='WHOLE',
-                            description='test ingredient')
+    ingredient = Ingredient(
+        recipe_id=recipe,
+        amount=1.0,
+        measurement_unit="WHOLE",
+        description="test ingredient",
+    )
     ingredient.save()
     return ingredient
 
@@ -32,6 +41,7 @@ class TestIngredientModel:
         - Editing of an ingredient
         - Negative tests to ensure that invalid data cannot be added to the database
     """
+
     @pytest.mark.django_db
     def test_ingredient_fixture(self, ingredient):
         assert ingredient in Ingredient.objects.all()
@@ -52,7 +62,12 @@ class TestIngredientModel:
     def test_invalid_amount_input(self, ingredient):
         with pytest.raises(ValidationError):
             recipe = Recipe.objects.all()[0]
-            ingredient2 = Ingredient(recipe_id=recipe, amount=-3, measurement_unit="FLOZ", description="test2")
+            ingredient2 = Ingredient(
+                recipe_id=recipe,
+                amount=-3,
+                measurement_unit="FLOZ",
+                description="test2",
+            )
             ingredient2.full_clean()
             ingredient2.save()
 
@@ -66,6 +81,8 @@ class TestIngredientModel:
     @pytest.mark.django_db
     def test_add_ingredients(self, ingredient):
         recipe = Recipe.objects.all()[0]
-        ingredient2 = Ingredient(recipe_id=recipe, amount=3, measurement_unit="Whole", description="test2")
+        ingredient2 = Ingredient(
+            recipe_id=recipe, amount=3, measurement_unit="Whole", description="test2"
+        )
         ingredient2.save()
         assert ingredient2 in Ingredient.objects.all()
