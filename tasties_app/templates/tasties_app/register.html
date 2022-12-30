@@ -1,24 +1,21 @@
 {% extends 'tasties_app/base.html' %}
-<!DOCTYPE html>
 {% load static %}
-<html>
-  <head>
-    <title>Login</title>
-  </head>
-  <body>
-    {% block content %}
-    <link rel="stylesheet" href="{% static 'css/register.css' %}" />
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/authentication.css' %}" />
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
       integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
       crossorigin="anonymous"
     />
+{% endblock %}
+
+{% block content %}
     <div class="container h-100">
       <div class="d-flex justify-content-center h-100">
         <div class="user_card">
           <div class="d-flex justify-content-center">
-            <h3 id="form-title">Sign up a new user</h3>
+            <h1 id="form-title">Sign Up</h1>
           </div>
           <div class="d-flex justify-content-center form_container">
             <form method="POST" action="">
@@ -55,7 +52,9 @@
                 </div>
                 {{form.password2}}
               </div>
-
+                {% for message in messages %}
+                    <p id="messages">{{message}}</p>
+                {% endfor %}
               <div class="d-flex justify-content-center mt-3 login_container">
                 <input
                   class="btn login_btn"
@@ -65,7 +64,6 @@
               </div>
             </form>
           </div>
-
           <div class="mt-4">
             <div class="d-flex justify-content-center links">
               Already have an account?
@@ -75,6 +73,4 @@
         </div>
       </div>
     </div>
-    {% endblock %}
-  </body>
-</html>
+{% endblock %}
