@@ -1,27 +1,5 @@
 import pytest
-from django.contrib.auth.models import User
-from tasties_app.models import Rating, Recipe
-
-
-@pytest.fixture()
-def rating():
-    """
-    This fixture create the data we need in order to execute the tests.
-    """
-    user1 = User.objects.create_user("testuser1", "password")
-    recipe = Recipe(
-        title="Test Recipe1",
-        author_id=user1,
-        description="Test Description1",
-        directions="Test Directions1",
-        minutes_to_make=1,
-        recipe_picture="test_picture2",
-    )
-    recipe.save()
-
-    rating = Rating(author_id=user1, recipe_id=recipe, rating=3)
-    rating.save()
-    return rating
+from tasties_app.models import Rating
 
 
 class TestRatingModel:

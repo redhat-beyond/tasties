@@ -1,28 +1,6 @@
 import pytest
-from tasties_app.models import Recipe, Category
-from django.utils import timezone
-from django.contrib.auth.models import User
+from tasties_app.models import Recipe
 from django.core.exceptions import ValidationError
-
-
-@pytest.fixture
-def recipe():
-    """
-        This fixture create the data we need for tests
-        and save it in the data base.
-    """
-    user1 = User.objects.create_user(username='john', password='password')
-    test_data = ['Test Recipe1', user1, 'Test Description1', 'Test Directions1', 1, 'test_picture1']
-    category1 = Category.objects.create(category_name="1")
-    recipe1 = Recipe(title=test_data[0], author_id=test_data[1], description=test_data[2], directions=test_data[3],
-                     publication_date=timezone.now(), minutes_to_make=test_data[4], recipe_picture=test_data[5])
-    recipe1.full_clean()
-    category1.full_clean()
-    category1.save()
-    recipe1.save()
-    recipe1.categories.add(category1)
-    recipe1.save()
-    return recipe1
 
 
 class TestRecipeModel:
