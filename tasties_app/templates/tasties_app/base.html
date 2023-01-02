@@ -82,7 +82,17 @@
     </nav>
 
     <!-- Main content -->
-    {% block content %}{% endblock %}
+    {% block content %}
+        <div class="container-fluid bg-light d-flex justify-content-center" id="category_btn_container">
+            <ul class="categories">
+                {% for i in objects %}
+                <li style="display:inline">
+                    <button type="button" class="btn" id="category_btn">{{i}}</button>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endblock %}
 
     <!-- Footer -->
     <div class="footer flex-container bg-light fixed-bottom" id="footer">

@@ -51,3 +51,11 @@ nav{
     padding: 5px 20px 0px;
     border-top: rgb(234, 234, 234) 1px solid;
 }
+
+
+.categories{
+    margin-top: 7px;
+}
+#category_btn:hover{
+    color: red;
+}
