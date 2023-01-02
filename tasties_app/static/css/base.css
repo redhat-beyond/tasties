@@ -1,0 +1,53 @@
+nav{
+    display: flex;
+    border-bottom: rgb(234, 234, 234) 1px solid;
+}
+
+#logo{
+    color: #10654e;
+    font-size: 25px;
+}
+
+#logo img{
+    margin-top: 5px;
+    width: 30px;
+    height: 25px;
+}
+
+.form-group{
+    position: relative;
+    margin-bottom: 0;
+}
+
+#search{
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+    margin-left: 50px;
+    width: 350px;
+    border-radius: 20px;
+}
+
+#search-button{
+    position: absolute;
+    z-index: 10;
+    right: 0%;
+}
+
+#search-button:hover{
+    color: black;
+}
+
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+#footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    padding: 5px 20px 0px;
+    border-top: rgb(234, 234, 234) 1px solid;
+}
