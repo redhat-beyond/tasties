@@ -1,7 +1,28 @@
 import pytest
 from django.contrib.auth.models import User
 from django.utils import timezone
-from tasties_app.models import Category, Ingredient, Rating, Recipe
+from tasties_app.models import Category, Ingredient, Rating, Recipe, Comment
+
+
+@pytest.fixture
+def comment():
+    """
+    in this generate function we create User, Category and Recipe
+    objects to fill Comment class and used to test
+     """
+
+    user = User.objects.create_user(username='test_user', password='password')
+    recipe = Recipe(title='Test Recipe1', author_id=user, description='Test Description1',
+                    directions='Test Directions1', publication_date=timezone.now(), minutes_to_make=1,
+                    recipe_picture='recipe.jpeg')
+    recipe.clean_fields()
+    recipe.save()
+    comment = Comment(author_id=user, recipe_id=recipe, publication_date=timezone.now(),
+                      comment_text='test comment')
+    comment.clean_fields()
+    comment.save()
+
+    return comment
 
 
 @pytest.fixture()

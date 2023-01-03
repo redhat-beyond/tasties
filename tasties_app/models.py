@@ -5,6 +5,7 @@ from django.core.validators import (
     MaxValueValidator,
     MinLengthValidator,
     MinValueValidator,
+
 )
 from django.db import models
 from django.utils import timezone
@@ -104,6 +105,9 @@ class Comment(models.Model):
     recipe_id = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     publication_date = models.DateField(default=timezone.now)
     comment_text = models.CharField(max_length=512, validators=[MinLengthValidator(1)])
+
+    def __str__(self):
+        return str(self.author_id) + ' ' + self.comment_text + ' ' + str(self.publication_date)
 
 
 class Rating(models.Model):
