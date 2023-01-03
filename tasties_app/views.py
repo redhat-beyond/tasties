@@ -7,5 +7,5 @@ def index(request):
 
 
 def base(request):
-    objects = Category.objects.all()
-    return render(request, 'tasties_app/base.html', {'objects': objects})
+    categories_list = Category.objects.all()
+    return render(request, 'tasties_app/base.html', {'objects': categories_list})

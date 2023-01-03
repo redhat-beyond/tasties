@@ -82,11 +82,11 @@
     </nav>
 
     <!-- Main content -->
-    {% block content %}
-        <div class="container-fluid bg-light d-flex justify-content-center" id="category_btn_container">
-            <ul class="categories">
+    {% block categories_block %}
+        <div class="container-fluid bg-light d-flex justify-content-center" class="category_btn_container">
+            <ul class="list-group list-group-horizontal list-unstyled" id="ul_categories">
                 {% for i in objects %}
-                <li style="display:inline">
+                <li class="list-group-item-sm">
                     <button type="button" class="btn" id="category_btn">{{i}}</button>
                 </li>
                 {% endfor %}
