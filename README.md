@@ -1,5 +1,5 @@
 # Tasties
-![tasties](./static/images/tasties_logo_round.png)
+![tasties](./tasties_app/static/images/tasties_logo_round.png)
 
 ### Introduction
 Welcome to Tasties! We're creating an open-source platform where people can share and discover recipes,
