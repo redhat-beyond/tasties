@@ -8,4 +8,4 @@ def index(request):
 
 def base(request):
     categories_list = Category.objects.all()
-    return render(request, 'tasties_app/base.html', {'objects': categories_list})
+    return render(request, 'tasties_app/base.html', {'categories_list': categories_list})
