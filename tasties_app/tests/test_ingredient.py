@@ -60,16 +60,15 @@ class TestIngredientModel:
 
     @pytest.mark.django_db
     def test_invalid_amount_input(self, ingredient):
+        recipe = ingredient.recipe_id
+        ingredient2 = Ingredient(
+            recipe_id=recipe,
+            amount=-3,
+            measurement_unit=Ingredient.UnitChoices.FLOZ,
+            description="test2",
+        )
         with pytest.raises(ValidationError):
-            recipe = Recipe.objects.all()[0]
-            ingredient2 = Ingredient(
-                recipe_id=recipe,
-                amount=-3,
-                measurement_unit="FLOZ",
-                description="test2",
-            )
             ingredient2.full_clean()
-            ingredient2.save()
 
     @pytest.mark.django_db
     def test_invalid_measurement_edit(self, ingredient):
@@ -80,7 +79,7 @@ class TestIngredientModel:
 
     @pytest.mark.django_db
     def test_add_ingredients(self, ingredient):
-        recipe = Recipe.objects.all()[0]
+        recipe = ingredient.recipe_id
         ingredient2 = Ingredient(
             recipe_id=recipe, amount=3, measurement_unit="Whole", description="test2"
         )

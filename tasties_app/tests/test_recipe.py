@@ -1,6 +1,6 @@
 import pytest
 from tasties_app.models import Recipe
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 
 
 class TestRecipeModel:
@@ -25,7 +25,8 @@ class TestRecipeModel:
     @pytest.mark.django_db
     def test_delete_recipe(self, recipe):
         recipe.delete()
-        assert len(Recipe.objects.all()) == 0
+        with pytest.raises(ObjectDoesNotExist):
+            Recipe.objects.get(pk=recipe.id)
 
     @pytest.mark.django_db
     def test_str_function(self, recipe):
