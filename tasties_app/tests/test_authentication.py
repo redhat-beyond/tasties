@@ -1,5 +1,4 @@
 import pytest
-from django.contrib.auth.models import User
 from pytest_django.asserts import assertTemplateUsed
 from authConstants import (
     VALID_EMAIL, VALID_PASSWORD, VALID_USER, INVALID_EMAIL, INVALID_PASSWORD_MISMATCH, LOGIN_PATH, REGISTER_PATH,
@@ -9,11 +8,6 @@ from authConstants import (
 
 @pytest.mark.django_db
 class TestViews:
-    @pytest.fixture
-    def signed_up_credentials(self):
-        user = User.objects.create_user(username=VALID_USER, email=VALID_EMAIL, password=VALID_PASSWORD)
-        user.save()
-
     def test_login_loaded(self, client):
         response = client.get('/login/')
         assert response.status_code == 200

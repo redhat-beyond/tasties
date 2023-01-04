@@ -2,6 +2,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.utils import timezone
 from tasties_app.models import Category, Ingredient, Rating, Recipe, Comment
+from authConstants import VALID_USER, VALID_PASSWORD, VALID_EMAIL
 
 
 @pytest.fixture
@@ -176,3 +177,9 @@ def recipe():
     recipe1.categories.add(category1)
     recipe1.save()
     return recipe1
+
+
+@pytest.fixture
+def signed_up_credentials():
+    user = User.objects.create_user(username=VALID_USER, email=VALID_EMAIL, password=VALID_PASSWORD)
+    user.save()

@@ -1,10 +1,13 @@
 import pytest
-from pytest_django.asserts import assertTemplateUsed
+from authConstants import VALID_USER, VALID_PASSWORD
 
 
 @pytest.mark.django_db
 class TestRecipesView:
-    def test_recipes_view(self, client):
-        response = client.get('/recipes/')
-        assert response.status_code == 200
-        assertTemplateUsed(response, 'tasties_app/recipes.html')
+    def test_recipes_view(self, client, signed_up_credentials):
+        response = client.get('/')
+        assert response.status_code == 302
+        assert response.url == '/login/?next=/'
+        response = client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
+        assert response.status_code == 302
+        assert response.url == '/'
