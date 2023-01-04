@@ -8,15 +8,11 @@ from .forms import CreateUserForm
 from django.contrib import messages
 
 
-@login_required(login_url='login')
-def index(request):
-    return render(request, 'tasties_app/index.html',)
-
-
 def base(request):
     return render(request, 'tasties_app/base.html',)
 
 
+@login_required(login_url='login')
 def recipes(request):
     recipes_list = Recipe.objects.all()
     recipes_with_ratings = {}
@@ -50,7 +46,7 @@ def logout_user(request):
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('recipes')
 
     form = CreateUserForm()
     if request.method == 'POST':
