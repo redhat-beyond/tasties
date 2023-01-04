@@ -17,10 +17,16 @@ def base(request):
 
 
 @login_required(login_url="login")
-def recipes(request):
-    recipes_list = Recipe.objects.annotate(
-        recipe_rating=Avg("rating__rating")
-    ).order_by(sort_list(request))
+def recipes(request, temp=None):
+    if temp is None:
+        recipes_list = Recipe.objects.annotate(
+                                               recipe_rating=Avg("rating__rating")
+                                            ).order_by(sort_list(request))
+    else:
+        if temp == "Empty":
+            recipes_list = []
+        else:
+            recipes_list = temp
     categories_list = Category.objects.all()
     selected_category = request.GET.get("category")
     if selected_category:
@@ -215,3 +221,15 @@ def edit_recipe(request, recipe_id):
 
     context = {'recipe_form': recipe_form, 'ingredient_formset': ingredient_formset}
     return render(request, 'tasties_app/edit_recipe.html', context)
+
+
+@login_required(login_url='login')
+def recipes_search(request):
+    recipes_list = None
+    if request.method == 'POST':
+        search_value = request.POST.get('search')
+        if search_value:
+            recipes_list = Recipe.objects.filter(title__icontains=search_value)
+        else:
+            recipes_list = "Empty"
+    return recipes(request, recipes_list)

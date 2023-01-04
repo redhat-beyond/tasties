@@ -279,3 +279,26 @@ def formset_data():
         formset_data["ingredient_set-" + str(i) + "-amount"] = 1
         formset_data["ingredient_set-" + str(i) + "-id"] = i + 1
     return formset_data
+
+
+@pytest.fixture()
+def search_recipe():
+    """
+    This fixture generates some test Recipes
+
+    Returns:
+        tuple<Recipe>: A number of Recipe test objects
+    """
+    user = User.objects.create_user(
+        "testuser1", "password"
+    )  # This is required to create Recipes
+    recipe_1 = Recipe(
+        title="salad",
+        author_id=user,
+        description="Test Description1",
+        directions="Test Directions1",
+        minutes_to_make=1,
+        recipe_picture="test_picture1",
+    )
+    recipe_1.save()
+    return recipe_1
