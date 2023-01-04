@@ -44,10 +44,13 @@
 
       {% if user.is_authenticated %}
           <!-- Search -->
+          <form method='POST'>
+            {% csrf_token %}    
           <div class="form-group">
             <span class="input-group-append">
               <input
                 type="text"
+                name="search"
                 class="form-control"
                 placeholder="Search"
                 id="search"
@@ -60,7 +63,7 @@
               </button>
             </span>
           </div>
-
+        </form>
           <!-- Profile -->
           <div class="dropdown">
             <button

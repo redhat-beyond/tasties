@@ -1,0 +1,36 @@
+{% extends 'tasties_app/base.html' %}
+{% load static %}
+{% block css %}
+    {% load bootstrap_icons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/recipes.css' %}" />
+{% endblock %}
+{% block content %}
+    <div class="grid">
+    <div class="row">
+    {% for recipe, rating in recipes_with_ratings.items %}
+      <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <a href="#">
+            <div class="card">
+              <img
+                class="card-img-top"
+                src="{% static recipe.recipe_picture %}"
+                alt="{{ recipe.title }}"
+              />
+
+              <div class="card-body">
+                <h2 class="card-title">{{ recipe.title }}</h2>
+                <p class="card-text text-truncate-container">
+                  {{ recipe.description }}
+                </p>
+                <div class="card-footer">
+                  <span class="minutes">{% bs_icon 'clock-history' %} {{ recipe.minutes_to_make }} mins</span>
+                  <span class="rating">{% bs_icon 'star-fill' %} {{ rating | floatformat:2 }}</span>
+                </div>
+              </div>
+            </div>
+        </a>
+      </div>
+    {% endfor %}
+    </div>
+    </div>
+{% endblock %}
