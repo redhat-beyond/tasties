@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from tasties_app.models import Recipe, Rating
+from django.db.models import Avg
+from collections import OrderedDict
 
 
 def index(request):
@@ -7,3 +10,13 @@ def index(request):
 
 def base(request):
     return render(request, 'tasties_app/base.html',)
+
+
+def recipes(request):
+    recipes_list = Recipe.objects.all()
+    recipes_with_ratings = {}
+    for recipe in recipes_list:
+        recipes_with_ratings[recipe] = Rating.objects.filter(recipe_id=recipe).aggregate(Avg('rating'))['rating__avg']
+    recipes_with_ratings = OrderedDict(sorted(recipes_with_ratings.items(), key=lambda x: x[1], reverse=True))
+    context = {'recipes_with_ratings': recipes_with_ratings}
+    return render(request, 'tasties_app/recipes.html', context)
