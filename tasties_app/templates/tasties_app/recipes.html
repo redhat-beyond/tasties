@@ -5,9 +5,25 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/recipes.css' %}" />
 {% endblock %}
 {% block content %}
+    {% block categories_block %}
+        <div class="container-fluid bg-light d-flex justify-content-center" id="category_btn_container">
+            <form method="get" action="{% url 'recipes' %}">
+                <button type="submit" class="btn" name="category" value="remove_filter" id="remove_filter">Remove Filter</button>
+            </form>
+            <form method="get" action="{% url 'recipes' %}"  class="form_button">
+                <ul class="list-group list-group-horizontal list-unstyled" id="ul_categories">
+                {% for i in categories_list %}
+                    <li class="list-group-item-sm">
+                        <button type="submit" class="btn" name="category" value="{{i}}" id="category_btn">{{i}}</button>
+                    </li>
+                {% endfor %}
+                </ul>
+            </form>
+        </div>
+    {% endblock categories_block %}
     <div class="grid">
     <div class="row">
-    {% for recipe, rating in recipes_with_ratings.items %}
+    {% for recipe in recipes_list %}
       <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
         <a href="/view_recipe/{{ recipe.id }}/">
             <div class="card">
@@ -24,7 +40,7 @@
                 </p>
                 <div class="card-footer">
                   <span class="minutes">{% bs_icon 'clock-history' %} {{ recipe.minutes_to_make }} mins</span>
-                  <span class="rating">{% bs_icon 'star-fill' %} {{ rating | floatformat:2 }}</span>
+                  <span class="rating">{% bs_icon 'star-fill' %} {{ recipe.recipe_rating | floatformat:2 }}</span>
                 </div>
               </div>
             </div>
