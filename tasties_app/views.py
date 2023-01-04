@@ -9,16 +9,16 @@ from django.contrib import messages
 
 
 def base(request):
-    search_input = request.POST.get('search')
-    if search_input:
-        return recipes(request, search_input)
-    else:
-        return render(request, 'tasties_app/base.html')
+    return render(request, 'tasties_app/base.html')
 
 
 @login_required(login_url='login')
 def recipes(request):
-    recipes_list = Recipe.objects.all()
+    if request.method == 'POST':
+        search_value = request.POST.get('search')
+        recipes_list = Recipe.objects.filter(title__icontains=search_value)
+    else:
+        recipes_list = Recipe.objects.all()
     recipes_with_ratings = {}
     for recipe in recipes_list:
         recipes_with_ratings[recipe] = Rating.objects.filter(recipe_id=recipe).aggregate(Avg('rating'))['rating__avg']
