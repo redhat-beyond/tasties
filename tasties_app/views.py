@@ -21,7 +21,6 @@ def base(request):
         return render(request, 'tasties_app/base.html')
 
 
-
 def recipes(request):
     recipes_list = Recipe.objects.all()
     recipes_with_ratings = {}
