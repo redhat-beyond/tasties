@@ -1,0 +1,85 @@
+.recipe-body{
+    width: 60%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.recipe-header-info{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.categories .btn{
+    background-color: #20bd92;
+    color: #fff;
+}
+
+.categories .btn:hover{
+    background-color: #fff;
+    color: #10654e;
+    border: 1px solid #20bd92;
+}
+
+.img-and-ingredients{
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: flex-start;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 12px 12px 2px 1px #20bd92;
+}
+
+.img-and-ingredients .container{
+    padding: 0;
+}
+
+.recipe-image{
+    max-width: 50%;
+    max-height: 50%;
+    border-radius: 10px 0 0 10px;
+}
+
+.ingredients-list{
+    padding: 10px 40px 10px;
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+h1{
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+h2{
+    font-size: 1.2em;
+    font-weight: normal;
+    margin-bottom: 10px;
+    font-style: oblique;
+}
+
+h3{
+    font-size: 1.2em;
+    font-weight: normal;
+    margin-bottom: 10px;
+    font-style: oblique;
+}
+
+hr{
+    margin: 0 0 5px 0;
+}
+
+.time-and-rating{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    border-radius: 0 10px 0 0;
+    padding: 5px 10px 5px;
+}
+
+.categories{
+    margin-bottom: 10px;
+}
