@@ -61,3 +61,14 @@ def register(request):
 
     context = {'form': form}
     return render(request, 'tasties_app/register.html', context)
+
+
+@login_required(login_url='login')
+def view_recipe(request, recipe=None):
+    if not recipe:
+        return redirect('recipes')
+    ingredients = recipe.ingredient_set.all()
+    rating = recipe.rating_set.aggregate(Avg('rating'))['rating__avg']
+    categories = recipe.categories.all()
+    context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating, 'categories': categories}
+    return render(request, 'tasties_app/view_recipe.html', context)
