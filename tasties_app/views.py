@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from tasties_app.models import Category, Recipe
 
 from .forms import CreateUserForm
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def base(request):
@@ -23,17 +24,18 @@ def recipes(request):
     categories_list = Category.objects.all()
     selected_category = request.GET.get("category")
     if selected_category:
-        if selected_category != "remove_filter":
-            category = selected_category
-            try:
-                category = Category.objects.get(category_name=selected_category)
-            except Exception:
-                pass
-            recipes_list = (
-                Category.get_recipes_by_category(category)
-                .annotate(recipe_rating=Avg("rating__rating"))
-                .order_by("-recipe_rating")
-            )
+        if selected_category == "remove_filter":
+            return redirect("recipes")
+        category = selected_category
+        try:
+            category = Category.objects.get(category_name=selected_category)
+        except ObjectDoesNotExist:
+            return redirect("recipes")
+        recipes_list = (
+            Category.get_recipes_by_category(category)
+            .annotate(recipe_rating=Avg("rating__rating"))
+            .order_by("-recipe_rating")
+        )
     context = {
         "recipes_list": recipes_list,
         "categories_list": categories_list,
@@ -81,7 +83,6 @@ def register(request):
             for error_message in form.errors.values():
                 messages.error(request, error_message)
 
-<<<<<<< HEAD
     context = {'form': form}
     return render(request, 'tasties_app/register.html', context)
 
