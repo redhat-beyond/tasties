@@ -66,9 +66,9 @@ def categories():
     Returns:
         tuple<Category>: A number of Category test objects
     """
-    category_1 = Category.objects.create(category_name="Breakfast")
-    category_2 = Category.objects.create(category_name="Mushrooms")
-    category_3 = Category.objects.create(category_name="Beef")
+    category_1 = Category.objects.create(category_name="1")
+    category_2 = Category.objects.create(category_name="2")
+    category_3 = Category.objects.create(category_name="3")
     return (category_1, category_2, category_3)
 
 

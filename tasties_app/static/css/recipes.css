@@ -51,3 +51,18 @@
     justify-content: space-between;
     padding: 10px 0 0 0;
 }
+#category_btn:hover{
+    color: red;
+}
+#category_btn_container .form_button{
+     overflow-x: scroll;
+}
+#category_btn_container #remove_filter{
+    margin-right: 35px;
+    margin-top: 5px;
+    font-size: medium;
+    font-family: Arial;
+}
+#category_btn_container #remove_filter:hover{
+    color: red;
+}
