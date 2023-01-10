@@ -83,3 +83,28 @@ hr{
 .categories{
     margin-bottom: 10px;
 }
+
+.comment-section {
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.comment-section .comment-container{
+    padding-top: 5px;
+    padding-bottom: 10px;
+    background-color: #faf7f7;
+    border-radius: 7px;
+    margin-bottom: 7px;
+}
+
+.comment-section #author-name{
+    font-size: small;
+    justify-content: space-between;
+}
+
+.comment-section #comments-text{
+    font-size: 15px;
+    margin-top: 8px;
+    font-family: Arial;
+    font-style: oblique;
+}
