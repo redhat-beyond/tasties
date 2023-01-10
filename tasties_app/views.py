@@ -66,9 +66,8 @@ def register(request):
 
 @login_required(login_url='login')
 def view_recipe(request, recipe=None):
-    # if not recipe:
-    #     return redirect('recipes')
-    recipe = Recipe.objects.get(title='Cabbage and rosemary gyoza')
+    if not recipe:
+        return redirect('recipes')
     ingredients = recipe.ingredient_set.all()
     rating = recipe.rating_set.aggregate(Avg('rating'))['rating__avg']
     categories = recipe.categories.all()
