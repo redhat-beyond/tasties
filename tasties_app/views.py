@@ -106,7 +106,7 @@ def view_recipe(request, recipe_id=None):
     ingredients = recipe.ingredient_set.all()
     rating = recipe.rating_set.aggregate(Avg('rating'))['rating__avg']
     categories = recipe.categories.all()
-    if request.method == 'POST':
+    if request.method == "POST" and request.POST['action'] == 'Comment':
         add_comment(request, recipe.title)
     comments = Comment.objects.filter(recipe_id=recipe.id)
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating,
@@ -121,4 +121,5 @@ def add_comment(request, recipe_title):
     user = request.user
     comment_input = Comment(author_id=user, recipe_id=recipe, publication_date=timezone.now(),
                             comment_text=comment_value)
+    comment_input.full_clean()
     comment_input.save()
