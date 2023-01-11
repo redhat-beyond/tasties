@@ -1,0 +1,54 @@
+{% extends 'tasties_app/base.html' %}
+{% load static %}
+{% block css %}
+    {% load bootstrap_icons %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/view_recipe.css' %}" />
+{% endblock %}
+{% block content %}
+    <div class="recipe-body">
+        <div class="recipe-header">
+            <h1>{{ recipe.title }}</h1>
+            <h2>{{ recipe.description }}</h2>
+            <div class="recipe-header-info">
+                <span class="author-name">By @{{ recipe.author_id }}</span>
+                <span class="recipe-date">{{ recipe.publication_date }}</span>
+            </div>
+        </div>
+        <div class="categories">
+            {% for category in categories %}
+                <button class="btn btn-outline" name="{{ category.category_name }}">{{ category.category_name }}</button>
+            {% endfor %}
+
+        </div>
+        <div class="img-and-ingredients">
+            <img src="{% static recipe.recipe_picture %}" alt="{{ recipe.title }}" class="recipe-image">
+            <div class="container">
+                <div class="time-and-rating">
+                    <div class="recipe-time">
+                        <span class="recipe-time-icon">{% bs_icon 'clock-history' %}</span>
+                        <span class="recipe-time-text">{{ recipe.minutes_to_make }} mins</span>
+                    </div>
+                    <div class="recipe-rating">
+                        <span class="recipe-rating-icon">{% bs_icon 'star-fill' %}</span>
+                        <span class="recipe-rating-text">{{ rating }}</span>
+                    </div>
+                </div>
+            <hr>
+                <ul class="ingredients-list list-group list-group">
+                    <h3>Ingredients</h3>
+                    {% for ingredient in ingredients %}
+                        <li class="ingredient">
+                            {{ ingredient }}
+                        <hr>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div class="directions">
+            <h3>Directions</h3>
+            <p>{{ recipe.directions }}</p>
+        </div>
+        <hr>
+    </div>
+{% endblock %}
