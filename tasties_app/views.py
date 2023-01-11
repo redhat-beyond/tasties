@@ -57,7 +57,8 @@ def register(request):
             messages.success(request, 'Account was created for ' + username)
             return redirect('login')
         else:
-            messages.error(request, form.error_messages)
+            for error_message in form.errors.values():
+                messages.error(request, error_message)
 
     context = {'form': form}
     return render(request, 'tasties_app/register.html', context)
