@@ -52,7 +52,7 @@
         <hr>
         <section class="comment-section">
             <div id="comment-group" class="form-group">
-                <h3 for="exampleFormControlTextarea1">Comments</h3>
+                <h3>Comments</h3>
                 {% for comment in comments %}
                     <div class="comment-container">
                         <div class="container">
@@ -64,10 +64,10 @@
                     </div>
                 {% endfor %}
                 <form method="POST" >
-                    <textarea class="form-control mt-4" type="text" id="exampleFormControlTextarea1" rows="4" name="comment-adding" placeholder="Write your comment here"></textarea>
+                    <textarea class="form-control mt-4" type="text" rows="4" name="comment-adding" placeholder="Write your comment here"></textarea>
                     <div class="d-flex flex-row-reverse">
-                            {% csrf_token %}
-                        <button type="submit" class="btn btn-info mb-4 mt-1">Add comment</button>
+                        {% csrf_token %}
+                        <input type="submit" name='action' value="Comment" class="btn btn-info mb-4 mt-1"/>
                     </div>
                 </form>
             </div>
