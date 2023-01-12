@@ -18,6 +18,7 @@ class TestRecipesView:
         response = client.get(f'/view_recipe/{recipe.id}/')
         assert response.status_code == 200
         assert response.request['PATH_INFO'] == f'/view_recipe/{recipe.id}/'
+        assert response.context['recipe'] == recipe
 
     def test_view_recipe_unauthorized(self, client, recipes):
         recipe = recipes[0]
