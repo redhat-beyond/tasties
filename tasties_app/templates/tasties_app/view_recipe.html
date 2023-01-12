@@ -50,5 +50,28 @@
             <p>{{ recipe.directions }}</p>
         </div>
         <hr>
+        <section class="comment-section">
+            <div id="comment-group" class="form-group">
+                <h3>Comments</h3>
+                {% for comment in comments %}
+                    <div class="comment-container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col col-lg-2" id="author-name">By @{{ comment.author_id }}<br>{{ comment.publication_date }}</div>
+                                <div class="col-sm" id="comments-text">{{ comment.comment_text }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <form method="POST" >
+                    <textarea class="form-control mt-4" type="text" rows="4" name="comment-adding" placeholder="Write your comment here"></textarea>
+                    <div class="d-flex flex-row-reverse">
+                        {% csrf_token %}
+                        <input type="submit" name='action' value="Comment" class="btn btn-info mb-4 mt-1"/>
+                    </div>
+                </form>
+            </div>
+        </section>
+    <hr>
     </div>
 {% endblock %}
