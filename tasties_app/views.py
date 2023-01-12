@@ -1,14 +1,11 @@
-<<<<<<< HEAD
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.shortcuts import redirect, render
 from tasties_app.models import Category, Recipe
-
 from .forms import CreateUserForm
 from django.core.exceptions import ObjectDoesNotExist
-=======
 from django.shortcuts import render, redirect
 from tasties_app.models import Recipe, Rating, Comment
 from django.db.models import Avg
@@ -18,7 +15,6 @@ from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
 from django.contrib import messages
 from django.utils import timezone
->>>>>>> 553e79f (Adding comment feathure for view recipe page)
 
 
 def base(request):

@@ -188,3 +188,58 @@ def signed_up_credentials():
 @pytest.fixture()
 def login_to_site(client):
     client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
+
+
+@pytest.fixture
+def create_user():
+    """
+    This fixture create a user for test the recipe_view and the add_comment methods.
+    """
+    user = User(username=VALID_USER, email=VALID_EMAIL, password=VALID_PASSWORD)
+    user.full_clean()
+    user.save()
+    return user
+
+
+@pytest.fixture
+def recipe_test():
+    """
+    This fixture create a recipe for test the recipe_view and the add_comment methods.
+    """
+    user1 = User.objects.create_user(username="jakob", password="password")
+    test_data = [
+        "TestRecipe1",
+        user1,
+        "TestDescription1",
+        "TestDirections1",
+        1,
+        "TestPicture1",
+    ]
+    category1 = Category.objects.create(category_name="15")
+    recipe1 = Recipe(
+        title=test_data[0],
+        author_id=test_data[1],
+        description=test_data[2],
+        directions=test_data[3],
+        publication_date=timezone.now(),
+        minutes_to_make=test_data[4],
+        recipe_picture=test_data[5],
+    )
+    recipe1.full_clean()
+    category1.full_clean()
+    category1.save()
+    recipe1.save()
+    recipe1.categories.add(category1)
+    recipe1.save()
+    return recipe1
+
+
+@pytest.fixture
+def create_comment(create_user, recipe_test):
+    """
+    This fixture creat a comment to test the recipe_view and the add_comment methods.
+    """
+    comment = Comment(author_id=create_user.id, recipe_id=recipe_test.id,
+                      publication_date=timezone.now(),
+                      comment_text="TestComment")
+    return comment
