@@ -9,7 +9,7 @@
     <div class="row">
     {% for recipe, rating in recipes_with_ratings.items %}
       <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">
-        <a href="#">
+        <a href="/view_recipe/{{ recipe.id }}/">
             <div class="card">
               <img
                 class="card-img-top"
