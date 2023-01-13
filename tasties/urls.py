@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from tasties_app import views
+from tasties import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -25,5 +27,8 @@ urlpatterns = [
     path('login/', views.login_user, name="login"),
     path('register/', views.register, name="register"),
     path('logout/', views.logout_user, name="logout"),
-    path('view_recipe/<int:recipe_id>/', views.view_recipe, name="view_recipe")
+    path('view_recipe/<int:recipe_id>/', views.view_recipe, name="view_recipe"),
+    path('create_recipe/', views.create_recipe, name="create_recipe")
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

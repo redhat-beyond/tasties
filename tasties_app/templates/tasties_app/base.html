@@ -71,7 +71,7 @@
               {% bs_icon 'person-fill' %} Hello, {{ user.username }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="#">Add recipe</a>
+              <a class="dropdown-item" href="{% url 'create_recipe' %}"">Add recipe</a>
               <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>
           </div>
