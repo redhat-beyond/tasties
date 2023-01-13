@@ -28,7 +28,8 @@ urlpatterns = [
     path('register/', views.register, name="register"),
     path('logout/', views.logout_user, name="logout"),
     path('view_recipe/<int:recipe_id>/', views.view_recipe, name="view_recipe"),
-    path('create_recipe/', views.create_recipe, name="create_recipe")
+    path('create_recipe/', views.create_recipe, name="create_recipe"),
+    path('edit_recipe/<int:recipe_id>/', views.edit_recipe, name="edit_recipe"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -100,6 +100,8 @@ def view_recipe(request, recipe_id=None):
     comments = recipe.comment_set.all()
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating,
                'categories': categories, 'comments': comments}
+    if recipe.author_id == request.user:
+        context['can_edit'] = True
     return render(request, 'tasties_app/view_recipe.html', context)
 
 
@@ -144,6 +146,44 @@ def create_recipe(request):
             recipe = recipe_form.save(commit=False)
             if ingredient_formset.is_valid():
                 recipe = recipe_form.save()
+                ingredient_formset.save()
+                return redirect(f'/view_recipe/{recipe.id}/')
+            else:
+                for ingredient_form_errors in ingredient_formset.errors:
+                    for error_message in ingredient_form_errors.values():
+                        messages.error(request, error_message)
+        else:
+            for error_message in recipe_form.errors.values():
+                messages.error(request, error_message)
+    else:
+        recipe_form = CreateRecipeForm(instance=recipe)
+        ingredient_formset = IngredientFormSet(instance=recipe)
+
+    context = {'recipe_form': recipe_form, 'ingredient_formset': ingredient_formset}
+    return render(request, 'tasties_app/create_recipe.html', context)
+
+
+@login_required(login_url='login')
+def edit_recipe(request, recipe_id):
+    if not Recipe.objects.filter(pk=recipe_id).exists():
+        return redirect('recipes')
+    recipe = Recipe.objects.get(pk=recipe_id)
+    if not recipe.author_id.id == request.user.id:
+        return redirect('recipes')
+    IngredientFormSet = inlineformset_factory(Recipe,
+                                              Ingredient,
+                                              fields=('description', 'measurement_unit', 'amount'),
+                                              min_num=1,
+                                              validate_min=True,
+                                              extra=9)
+
+    if request.method == 'POST':
+        recipe_form = CreateRecipeForm(request.POST, request.FILES, instance=recipe)
+        ingredient_formset = IngredientFormSet(request.POST, instance=recipe)
+        if recipe_form.is_valid():
+            recipe = recipe_form.save(commit=False)
+            if ingredient_formset.is_valid():
+                recipe = recipe_form.save()
                 if not recipe.recipe_picture:
                     recipe.recipe_picture = 'images/tasties_logo_round.png'
                     recipe.save()
@@ -161,4 +201,4 @@ def create_recipe(request):
         ingredient_formset = IngredientFormSet(instance=recipe)
 
     context = {'recipe_form': recipe_form, 'ingredient_formset': ingredient_formset}
-    return render(request, 'tasties_app/create_recipe.html', context)
+    return render(request, 'tasties_app/edit_recipe.html', context)
