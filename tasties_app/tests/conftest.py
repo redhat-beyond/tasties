@@ -237,4 +237,7 @@ def create_comment(create_user, recipe_test):
     comment = Comment(author_id=create_user.id, recipe_id=recipe_test.id,
                       publication_date=timezone.now(),
                       comment_text="TestComment")
+
+    comment.full_clean()
+    comment.save()
     return comment
