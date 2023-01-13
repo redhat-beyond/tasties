@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
+from .models import Recipe
 
 
 class CreateUserForm(UserCreationForm):
@@ -16,3 +18,10 @@ class CreateUserForm(UserCreationForm):
             'username': forms.fields.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'email': forms.fields.EmailInput(attrs={'class': 'form-control', 'placeholder': 'john@doe.com'}),
         }
+
+
+class CreateRecipeForm(ModelForm):
+    class Meta:
+        model = Recipe
+        fields = ['author_id', 'title', 'description', 'categories', 'directions', 'minutes_to_make']
+        widgets = {'author_id': forms.HiddenInput()}

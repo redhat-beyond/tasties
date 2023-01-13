@@ -4,7 +4,8 @@ from django.db.models import Avg
 from collections import OrderedDict
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
-from .forms import CreateUserForm
+from .forms import CreateUserForm, CreateRecipeForm
+# from django.forms import inlineformset_factory
 from django.contrib import messages
 
 
@@ -74,3 +75,25 @@ def view_recipe(request, recipe_id=None):
     categories = recipe.categories.all()
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating, 'categories': categories}
     return render(request, 'tasties_app/view_recipe.html', context)
+
+
+@login_required(login_url='login')
+def create_recipe(request):
+    recipe = Recipe(author_id=request.user)
+    # IngredientFormSet = inlineformset_factory(Recipe, Ingredient, fields=('amount','measurement_unit','description'))
+    # ingredients = IngredientFormSet(instance=recipe)
+
+    if request.method == 'POST':
+        # recipe_form = CreateRecipeForm(request.POST)
+        # ingredients = IngredientFormSet(instance=recipe)
+        recipe_form = CreateRecipeForm(request.POST, instance=recipe)
+
+        if recipe_form.is_valid():
+            recipe = recipe_form.save()
+            Rating.objects.create(author_id=recipe.author_id, recipe_id=recipe, rating=5)
+            return redirect('view_recipe')
+    else:
+        recipe_form = CreateRecipeForm(instance=recipe)
+
+    context = {'recipe_form': recipe_form}
+    return render(request, 'tasties_app/create_recipe.html', context)

@@ -1,0 +1,15 @@
+{% extends 'tasties_app/base.html' %}
+{% load static %}
+{% block css %}
+    {% load bootstrap_icons %}
+    <!--link rel="stylesheet" type="text/css" href="{% static 'css/view_recipe.css' %}" /-->
+{% endblock %}
+{% block content %}
+<body>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ recipe_form }}
+        <input type="submit" value="Submit">
+    </form>
+</body>
+{% endblock %}
