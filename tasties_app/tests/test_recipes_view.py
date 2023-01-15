@@ -12,13 +12,27 @@ class TestRecipesView:
         assert response.status_code == 302
         assert response.url == '/'
 
-    def test_view_recipe(self, client, signed_up_credentials):
+    def test_view_recipe(self, client, signed_up_credentials, recipes):
         client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
-        response = client.get('/view_recipe/')
-        assert response.status_code == 302
-        assert response.request['PATH_INFO'] == '/view_recipe/'
+        recipe = recipes[0]
+        response = client.get(f'/view_recipe/{recipe.id}/')
+        assert response.status_code == 200
+        assert response.request['PATH_INFO'] == f'/view_recipe/{recipe.id}/'
+        assert response.context['recipe'] == recipe
 
-    def test_view_recipe_unauthorized(self, client):
-        response = client.get('/view_recipe/')
+    def test_view_recipe_unauthorized(self, client, recipes):
+        recipe = recipes[0]
+        response = client.get(f'/view_recipe/{recipe.id}/')
         assert response.status_code == 302
-        assert response.url == '/login/?next=/view_recipe/'
+        assert response.url == f'/login/?next=/view_recipe/{recipe.id}/'
+
+    def test_view_recipe_invalid_id(self, client, signed_up_credentials):
+        client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
+        response = client.get('/view_recipe/test1/')
+        assert response.status_code == 404
+
+    def test_view_recipe_not_found(self, client, signed_up_credentials):
+        client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
+        response = client.get('/view_recipe/99999999999/')
+        assert response.status_code == 302
+        assert response.url == '/'

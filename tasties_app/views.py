@@ -65,9 +65,10 @@ def register(request):
 
 
 @login_required(login_url='login')
-def view_recipe(request, recipe=None):
-    if not recipe:
+def view_recipe(request, recipe_id=None):
+    if not Recipe.objects.filter(pk=recipe_id).exists():
         return redirect('recipes')
+    recipe = Recipe.objects.get(pk=recipe_id)
     ingredients = recipe.ingredient_set.all()
     rating = recipe.rating_set.aggregate(Avg('rating'))['rating__avg']
     categories = recipe.categories.all()
