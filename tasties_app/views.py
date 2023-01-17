@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
-from tasties_app.models import Recipe, Rating
+from tasties_app.models import Recipe, Rating, Ingredient
 from django.db.models import Avg
 from collections import OrderedDict
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm, CreateRecipeForm
-# from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory
 from django.contrib import messages
 
 
@@ -80,23 +80,34 @@ def view_recipe(request, recipe_id=None):
 @login_required(login_url='login')
 def create_recipe(request):
     recipe = Recipe(author_id=request.user)
-    # IngredientFormSet = inlineformset_factory(Recipe, Ingredient, fields=('amount','measurement_unit','description'))
-    # ingredients = IngredientFormSet(instance=recipe)
+    IngredientFormSet = inlineformset_factory(Recipe,
+                                              Ingredient,
+                                              fields=('description', 'measurement_unit', 'amount'),
+                                              min_num=1,
+                                              validate_min=True,
+                                              extra=4)
 
     if request.method == 'POST':
-        # recipe_form = CreateRecipeForm(request.POST)
-        # ingredients = IngredientFormSet(instance=recipe)
         recipe_form = CreateRecipeForm(request.POST, request.FILES, instance=recipe)
-
+        ingredient_formset = IngredientFormSet(request.POST, instance=recipe)
         if recipe_form.is_valid():
-            recipe = recipe_form.save()
-            Rating.objects.create(author_id=recipe.author_id, recipe_id=recipe, rating=5)
-            return redirect(f'/view_recipe/{recipe.id}/')
+            recipe = recipe_form.save(commit=False)
+            rating = Rating(author_id=recipe.author_id, recipe_id=recipe, rating=5)
+            if ingredient_formset.is_valid():
+                recipe = recipe_form.save()
+                ingredient_formset.save()
+                rating.save()
+                return redirect(f'/view_recipe/{recipe.id}/')
+            else:
+                for ingredient_form_errors in ingredient_formset.errors:
+                    for error_message in ingredient_form_errors.values():
+                        messages.error(request, error_message)
         else:
             for error_message in recipe_form.errors.values():
                 messages.error(request, error_message)
     else:
         recipe_form = CreateRecipeForm(instance=recipe)
+        ingredient_formset = IngredientFormSet(instance=recipe)
 
-    context = {'recipe_form': recipe_form}
+    context = {'recipe_form': recipe_form, 'ingredient_formset': ingredient_formset}
     return render(request, 'tasties_app/create_recipe.html', context)
