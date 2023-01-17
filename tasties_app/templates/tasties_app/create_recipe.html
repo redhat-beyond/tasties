@@ -30,6 +30,16 @@
                         {{ recipe_form.description.errors }}
                         {{ recipe_form.description }}
                     </span>
+                    <p>Ingredients: </p>
+                    <span id="ingredients">
+                        {{ ingredient_formset.non_form_errors }}
+                        <ul id="ingredient-list">
+                            {{ ingredient_formset.management_form }}
+                            {% for ingredient_form in ingredient_formset %}
+                                <li>{{ ingredient_form }}</li>
+                            {% endfor %}
+                        </ul>
+                    </span>
                     <p>Directions: </p>
                     <span>
                         {{ recipe_form.directions }}
