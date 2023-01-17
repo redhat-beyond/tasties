@@ -104,7 +104,7 @@ def view_recipe(request, recipe_id=None):
     categories = recipe.categories.all()
     if request.method == "POST" and request.POST['action'] == 'Comment':
         add_comment(request, recipe)
-    comments = recipe.comment_set.all()
+    comments = Comment.objects.filter(recipe_id=recipe.id)
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating,
                'categories': categories, 'comments': comments}
     return render(request, 'tasties_app/view_recipe.html', context)
