@@ -51,6 +51,7 @@
     justify-content: space-between;
     padding: 10px 0 0 0;
 }
+
 #category_btn:hover{
     color: red;
 }
@@ -63,6 +64,12 @@
     font-size: medium;
     font-family: Arial;
 }
-#category_btn_container #remove_filter:hover{
+#category_btn_container #remove_filter:hover {
     color: red;
+}
+
+.sort{
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
 }

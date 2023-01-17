@@ -20,7 +20,7 @@ def base(request):
 def recipes(request):
     recipes_list = Recipe.objects.annotate(
         recipe_rating=Avg("rating__rating")
-    ).order_by("-recipe_rating")
+    ).order_by(sort_list(request))
     categories_list = Category.objects.all()
     selected_category = request.GET.get("category")
     if selected_category:
@@ -33,7 +33,7 @@ def recipes(request):
         recipes_list = (
             Category.get_recipes_by_category(category)
             .annotate(recipe_rating=Avg("rating__rating"))
-            .order_by("-recipe_rating")
+            .order_by(sort_list(request))
         )
     context = {
         "recipes_list": recipes_list,
@@ -96,3 +96,16 @@ def view_recipe(request, recipe_id=None):
     categories = recipe.categories.all()
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating, 'categories': categories}
     return render(request, 'tasties_app/view_recipe.html', context)
+
+
+def sort_list(request):
+    if request.method == 'POST' and request.POST.get('action') == 'Sort':
+        sort_by = request.POST['sort_by']
+        if sort_by == 'date':
+            return "-publication_date"
+        elif sort_by == 'name':
+            return "title"
+        else:
+            return "-recipe_rating"
+    else:
+        return "-recipe_rating"
