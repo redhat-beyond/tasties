@@ -114,7 +114,7 @@ def create_recipe(request):
                                               fields=('description', 'measurement_unit', 'amount'),
                                               min_num=1,
                                               validate_min=True,
-                                              extra=4)
+                                              extra=9)
 
     if request.method == 'POST':
         recipe_form = CreateRecipeForm(request.POST, request.FILES, instance=recipe)
