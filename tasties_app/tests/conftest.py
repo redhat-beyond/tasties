@@ -183,3 +183,8 @@ def recipe():
 def signed_up_credentials():
     user = User.objects.create_user(username=VALID_USER, email=VALID_EMAIL, password=VALID_PASSWORD)
     user.save()
+
+
+@pytest.fixture()
+def login_to_site(client):
+    client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
