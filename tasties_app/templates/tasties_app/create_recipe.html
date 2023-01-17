@@ -2,14 +2,57 @@
 {% load static %}
 {% block css %}
     {% load bootstrap_icons %}
-    <!--link rel="stylesheet" type="text/css" href="{% static 'css/view_recipe.css' %}" /-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create_recipe.css' %}">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP"
+      crossorigin="anonymous"
+    />
 {% endblock %}
 {% block content %}
-<body>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ recipe_form }}
-        <input type="submit" value="Submit">
-    </form>
-</body>
+    <div class="container">
+
+        <div class="d-flex justify-content-center h-100">
+        <div class="form-card">
+            <h1>Create new recipe</h1>
+            <br/>
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-input">
+                    <p>Title: </p>
+                    <span>
+                        {{ recipe_form.title.errors }}
+                        {{ recipe_form.title }}
+                    </span>
+                    <p>Description: </p>
+                    <span id="description">
+                        {{ recipe_form.description.errors }}
+                        {{ recipe_form.description }}
+                    </span>
+                    <p>Directions: </p>
+                    <span>
+                        {{ recipe_form.directions }}
+                    </span>
+                    <p>Categories: </p>
+                    <div class="categories">
+                        <ul>
+                            {% for category in recipe_form.categories %}
+                                <li>{{ category }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <p>Minutes to make:</p>
+                    <span id="time">{{ recipe_form.minutes_to_make }}</span>
+                    <p>Image: </p>
+                    <span id="image">{{ recipe_form.recipe_picture }}</span>
+                </div>
+                {% for error in recipe_form.errors.values %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+        </div>
+    </div>
 {% endblock %}
