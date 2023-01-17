@@ -15,7 +15,7 @@
 
         <div class="d-flex justify-content-center h-100">
         <div class="form-card">
-            <h1>Create new recipe</h1>
+            {% block crud-action %}<h1>Create New Recipe</h1>{% endblock %}
             <br/>
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}

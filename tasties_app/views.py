@@ -1,20 +1,13 @@
-from django.shortcuts import render, redirect
-from tasties_app.models import Recipe, Rating, Ingredient
-from django.db.models import Avg
-from collections import OrderedDict
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.decorators import login_required
-from .forms import CreateUserForm, CreateRecipeForm
-from django.forms import inlineformset_factory
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.shortcuts import redirect, render
-from tasties_app.models import Category, Recipe
+from tasties_app.models import Category, Recipe, Ingredient
 
-from .forms import CreateUserForm
+from .forms import CreateUserForm, CreateRecipeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import inlineformset_factory
 
 
 def base(request):
@@ -121,11 +114,9 @@ def create_recipe(request):
         ingredient_formset = IngredientFormSet(request.POST, instance=recipe)
         if recipe_form.is_valid():
             recipe = recipe_form.save(commit=False)
-            rating = Rating(author_id=recipe.author_id, recipe_id=recipe, rating=5)
             if ingredient_formset.is_valid():
                 recipe = recipe_form.save()
                 ingredient_formset.save()
-                rating.save()
                 return redirect(f'/view_recipe/{recipe.id}/')
             else:
                 for ingredient_form_errors in ingredient_formset.errors:
