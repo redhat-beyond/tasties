@@ -115,12 +115,15 @@ def create_recipe(request):
     if request.method == 'POST':
         # recipe_form = CreateRecipeForm(request.POST)
         # ingredients = IngredientFormSet(instance=recipe)
-        recipe_form = CreateRecipeForm(request.POST, instance=recipe)
+        recipe_form = CreateRecipeForm(request.POST, request.FILES, instance=recipe)
 
         if recipe_form.is_valid():
             recipe = recipe_form.save()
             Rating.objects.create(author_id=recipe.author_id, recipe_id=recipe, rating=5)
-            return redirect('view_recipe')
+            return redirect(f'/view_recipe/{recipe.id}/')
+        else:
+            for error_message in recipe_form.errors.values():
+                messages.error(request, error_message)
     else:
         recipe_form = CreateRecipeForm(instance=recipe)
 
