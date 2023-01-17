@@ -26,7 +26,6 @@ def recipes(request):
     if selected_category:
         if selected_category == "remove_filter":
             return redirect("recipes")
-        category = selected_category
         try:
             category = Category.objects.get(category_name=selected_category)
         except ObjectDoesNotExist:

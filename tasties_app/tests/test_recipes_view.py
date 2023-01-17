@@ -36,3 +36,29 @@ class TestRecipesView:
         response = client.get('/view_recipe/99999999999/')
         assert response.status_code == 302
         assert response.url == '/'
+
+
+@pytest.mark.django_db
+class TestFilteringRecipes:
+    def test_category_view(self, client, signed_up_credentials, categorized_recipes):
+        client.post(
+            "/login/", data={"username": VALID_USER, "password": VALID_PASSWORD}
+        )
+        category = categorized_recipes[1][0]
+        recipe = categorized_recipes[0][0]
+        response = client.post(f"/?category={category}")
+        assert response.status_code == 200
+        assert len(response.context["recipes_list"]) == 1
+        assert recipe in response.context["recipes_list"]
+
+    def test_remove_filter(self, client, signed_up_credentials, categorized_recipes):
+        client.post("/login/", data={"username": VALID_USER, "password": VALID_PASSWORD})
+        categories = [
+            categorized_recipes[1][0],
+            categorized_recipes[1][1],
+            categorized_recipes[1][2],
+        ]
+        response = client.post("/")
+        assert response.status_code == 200
+        for category in categories:
+            assert category in categories
