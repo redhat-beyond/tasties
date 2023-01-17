@@ -1,8 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
-from tasties_app.models import Recipe, Rating, Comment
+from tasties_app.models import Recipe, Comment, Category
 from django.db.models import Avg
-from collections import OrderedDict
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from .forms import CreateUserForm
