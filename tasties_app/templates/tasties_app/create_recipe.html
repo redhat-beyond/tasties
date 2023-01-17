@@ -36,7 +36,8 @@
                         <ul id="ingredient-list">
                             {{ ingredient_formset.management_form }}
                             {% for ingredient_form in ingredient_formset %}
-                                <li>{{ ingredient_form }}</li>
+                                <li>{{ ingredient_form.as_p }}</li>
+                                <hr>
                             {% endfor %}
                         </ul>
                     </span>

@@ -71,3 +71,20 @@ h1{
 #time{
     width: 100px;
 }
+
+#ingredients{
+    width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+    background-color: white;
+    padding-top: 10px;
+}
+
+#ingredients ul{
+    list-style: none;
+    padding-left: 10px;
+}
+
+#ingredients li{
+    margin-bottom: 20px;
+}
