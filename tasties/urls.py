@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from tasties_app import views
+from . import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -28,3 +30,5 @@ urlpatterns = [
     path('view_recipe/<int:recipe_id>/', views.view_recipe, name="view_recipe"),
     path('create_recipe/', views.create_recipe, name="create_recipe")
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
