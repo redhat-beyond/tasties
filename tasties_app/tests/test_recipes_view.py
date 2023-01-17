@@ -36,6 +36,20 @@ class TestRecipesView:
         assert response.status_code == 302
         assert response.url == '/'
 
+    def test_add_comment_function(self, client, comment, recipe_test, create_user):
+        client.force_login(create_user)
+        response = client.get(f'/view_recipe/{recipe_test.id}/?comment-adding={comment.comment_text}')
+        assert response.status_code == 200
+        comment_test = Comment.objects.get(author_id=comment.author_id, comment_text=comment.comment_text)
+        assert comment_test.comment_text == comment.comment_text
+
+    def test_add_comment_function_invalid(self, client, create_user, recipe_test, comment):
+        client.force_login(create_user)
+        response = client.get(f'/view_recipe/{recipe_test.id}/?comment-adding={""}')
+        assert response.status_code == 200
+        with pytest.raises(ObjectDoesNotExist):
+            Comment.objects.get(author_id=comment.author_id, comment_text="")
+
 
 @pytest.mark.django_db
 class TestFilteringRecipes:
@@ -61,17 +75,3 @@ class TestFilteringRecipes:
         assert response.status_code == 200
         for category in categories:
             assert category in categories
-
-    def test_add_comment_function(self, client, comment, recipe_test, create_user):
-        client.force_login(create_user)
-        response = client.get(f'/view_recipe/{recipe_test.id}/?comment-adding={comment.comment_text}')
-        assert response.status_code == 200
-        comment_test = Comment.objects.get(author_id=comment.author_id, comment_text=comment.comment_text)
-        assert comment_test.comment_text == comment.comment_text
-
-    def test_add_comment_function_invalid(self, client, create_user, recipe_test, comment):
-        client.force_login(create_user)
-        response = client.get(f'/view_recipe/{recipe_test.id}/?comment-adding={""}')
-        assert response.status_code == 200
-        with pytest.raises(ObjectDoesNotExist):
-            Comment.objects.get(author_id=comment.author_id, comment_text="")

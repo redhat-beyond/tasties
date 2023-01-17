@@ -1,10 +1,3 @@
-from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
-from django.db.models import Avg
-from django.shortcuts import redirect, render
-from tasties_app.models import Category, Recipe
-from .forms import CreateUserForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from tasties_app.models import Recipe, Rating, Comment
@@ -104,7 +97,7 @@ def view_recipe(request, recipe_id=None):
     categories = recipe.categories.all()
     if request.method == "POST" and request.POST['action'] == 'Comment':
         add_comment(request, recipe)
-    comments = Comment.objects.filter(recipe_id=recipe.id)
+    comments = recipe.comment_set.all()
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating,
                'categories': categories, 'comments': comments}
     return render(request, 'tasties_app/view_recipe.html', context)
