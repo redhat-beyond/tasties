@@ -22,6 +22,19 @@
         </div>
     {% endblock categories_block %}
     <div class="grid">
+    <div class="sort">
+        <strong>{{ recipes_list|length }} Recipes found</strong>
+        <form method="POST">
+            {% csrf_token %}
+            <label for="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by">
+                <option value="rating">Rating</option>
+                <option value="name">Name</option>
+                <option value="date">Date</option>
+            </select>
+            <input type="submit" value="Sort" name="action"  />
+        </form>
+    </div>
     <div class="row">
     {% for recipe in recipes_list %}
       <div class="col-sm-6 col-md-6 col-lg-4 col-xl-3">

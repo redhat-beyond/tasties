@@ -34,6 +34,22 @@ class TestRecipesView:
         assert response.status_code == 302
         assert response.url == '/'
 
+    def test_sort_by_name(self, client, signed_up_credentials, recipe):
+        recipe.title = 'AAA Test'
+        recipe.save()
+        client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
+        response = client.post('/', data={'action': 'Sort', 'sort_by': 'name'})
+        assert response.status_code == 200
+        assert response.context['recipes_list'][0] == recipe
+
+    def test_sort_by_date(self, client, signed_up_credentials, recipe):
+        recipe.publication_date = '2030-01-01'
+        recipe.save()
+        client.post('/login/', data={'username': VALID_USER, 'password': VALID_PASSWORD})
+        response = client.post('/', data={'action': 'Sort', 'sort_by': 'date'})
+        assert response.status_code == 200
+        assert response.context['recipes_list'][0] == recipe
+
 
 @pytest.mark.django_db
 class TestFilteringRecipes:
