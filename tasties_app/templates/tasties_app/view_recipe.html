@@ -16,7 +16,9 @@
         </div>
         <div class="categories">
             {% for category in categories %}
-                <button class="btn btn-outline" name="{{ category.category_name }}">{{ category.category_name }}</button>
+                <a href="/?category={{ category.category_name }}" class="btn btn-outline">
+                    {{ category.category_name }}
+                </a>
             {% endfor %}
 
         </div>
