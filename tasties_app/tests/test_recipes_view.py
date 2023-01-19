@@ -1,5 +1,7 @@
 import pytest
 from authConstants import VALID_USER, VALID_PASSWORD
+from tasties_app.models import Comment
+from django.core.exceptions import ObjectDoesNotExist
 
 
 @pytest.mark.django_db
@@ -49,6 +51,18 @@ class TestRecipesView:
         response = client.post('/', data={'action': 'Sort', 'sort_by': 'date'})
         assert response.status_code == 200
         assert response.context['recipes_list'][0] == recipe
+
+    def test_add_comment_function(self, client, comment, recipe_test, login_to_site):
+        response = client.post(f'/view_recipe/{recipe_test.id}/?comment-adding={comment.comment_text}')
+        assert response.status_code == 302
+        comment_test = Comment.objects.get(pk=comment.id)
+        assert comment_test.comment_text == comment.comment_text
+
+    def test_add_comment_function_invalid(self, client, comment, recipe_test, login_to_site):
+        response = client.post(f'/view_recipe/{recipe_test.id}/?comment-adding={""}')
+        assert response.status_code == 302
+        with pytest.raises(ObjectDoesNotExist):
+            Comment.objects.get(author_id=comment.author_id, comment_text="")
 
 
 @pytest.mark.django_db

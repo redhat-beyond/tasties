@@ -3,8 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.shortcuts import redirect, render
-from tasties_app.models import Category, Recipe
-
+from tasties_app.models import Category, Recipe, Comment
 from .forms import CreateUserForm
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -94,7 +93,11 @@ def view_recipe(request, recipe_id=None):
     ingredients = recipe.ingredient_set.all()
     rating = recipe.rating_set.aggregate(Avg('rating'))['rating__avg']
     categories = recipe.categories.all()
-    context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating, 'categories': categories}
+    if request.method == "POST" and request.POST['action'] == 'Comment':
+        add_comment(request, recipe)
+    comments = recipe.comment_set.all()
+    context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating,
+               'categories': categories, 'comments': comments}
     return render(request, 'tasties_app/view_recipe.html', context)
 
 
@@ -109,3 +112,14 @@ def sort_list(request):
             return "-recipe_rating"
     else:
         return "-recipe_rating"
+
+
+@login_required(login_url='login')
+def add_comment(request, recipe):
+    comment_value = request.POST.get('comment-adding')
+    user = request.user
+    comment_input = Comment(author_id=user, recipe_id=recipe, comment_text=comment_value)
+    comment_input = Comment(author_id=user, recipe_id=recipe,
+                            comment_text=comment_value)
+    comment_input.full_clean()
+    comment_input.save()
