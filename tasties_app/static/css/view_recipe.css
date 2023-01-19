@@ -11,6 +11,21 @@
     font-size: 14px;
 }
 
+.recipe-title{
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-warning{
+    color: #924709;
+}
+
+.btn-warning:hover{
+    background-color: #fff;
+    color: #924709;
+    border: 1px solid #924709;
+}
+
 .categories .btn{
     background-color: #20bd92;
     color: #fff;
