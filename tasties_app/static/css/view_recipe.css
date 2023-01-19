@@ -108,3 +108,37 @@ hr{
     font-family: Arial;
     font-style: oblique;
 }
+
+.stars{
+    transform: rotateY(180deg);
+}
+
+.rating-box form{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.rating-box input[type="radio"]{
+    display: none;
+}
+
+.rating-box input[type="radio"] + label{
+    font-size: 30px;
+    width: 30px;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.rating-box label:before{
+    content: "\2605";
+    font-family: fontAwesome;
+    display: block;
+}
+
+.rating-box label+input:hover ~ label:before,
+.rating-box input:checked ~ label:before{
+    color: gold;
+    opacity: 1;
+    transition: .1s;
+    text-shadow: 0 2px 5px rgba(166, 166, 166, 0.5);
+}

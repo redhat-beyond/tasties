@@ -3,6 +3,7 @@
 {% block css %}
     {% load bootstrap_icons %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/view_recipe.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css">
 {% endblock %}
 {% block content %}
     <div class="recipe-body">
@@ -52,6 +53,24 @@
             <p>{{ recipe.directions }}</p>
         </div>
         <hr>
+        <div class="rating-box">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="stars">
+                    <input type="radio" name="rating" id="star5" value="5" />
+                    <label for="star5"></label>
+                    <input type="radio" name="rating" id="star4" value="4" />
+                    <label for="star4"></label>
+                    <input type="radio" name="rating" id="star3" value="3" />
+                    <label for="star3"></label>
+                    <input type="radio" name="rating" id="star2" value="2" />
+                    <label for="star2"></label>
+                    <input type="radio" name="rating" id="star1" value="1" />
+                    <label for="star1"></label>
+                </div>
+                <input type="submit" name="action" value="Add Rating" class="btn btn-info mb-4 mt-1">
+            </form>
+        </div>
         <section class="comment-section">
             <div id="comment-group" class="form-group">
                 <h3>Comments</h3>

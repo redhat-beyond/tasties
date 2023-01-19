@@ -3,8 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.shortcuts import redirect, render
-from tasties_app.models import Category, Recipe, Comment, Ingredient
-
+from tasties_app.models import Category, Recipe, Comment, Ingredient, Rating
 from tasties_app.forms import CreateUserForm, CreateRecipeForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import inlineformset_factory
@@ -93,9 +92,11 @@ def view_recipe(request, recipe_id=None):
         return redirect('recipes')
     recipe = Recipe.objects.get(pk=recipe_id)
     ingredients = recipe.ingredient_set.all()
+    if request.method == "POST" and request.POST.get('action') == 'Add Rating':
+        add_rating(request, recipe)
     rating = recipe.rating_set.aggregate(Avg('rating'))['rating__avg']
     categories = recipe.categories.all()
-    if request.method == "POST" and request.POST['action'] == 'Comment':
+    if request.method == "POST" and request.POST.get('action') == 'Comment':
         add_comment(request, recipe)
     comments = recipe.comment_set.all()
     context = {'recipe': recipe, 'ingredients': ingredients, 'rating': rating,
@@ -125,6 +126,18 @@ def add_comment(request, recipe):
                             comment_text=comment_value)
     comment_input.full_clean()
     comment_input.save()
+
+
+def add_rating(request, recipe):
+    rating_value = request.POST.get('rating')
+    if recipe.rating_set.filter(author_id=request.user).exists():
+        current_rating = recipe.rating_set.get(author_id=request.user)
+        current_rating.rating = int(rating_value)
+        current_rating.save()
+    else:
+        new_rating = Rating(author_id=request.user, recipe_id=recipe, rating=rating_value)
+        new_rating.full_clean()
+        new_rating.save()
 
 
 @login_required(login_url='login')

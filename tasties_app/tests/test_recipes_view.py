@@ -89,3 +89,25 @@ class TestFilteringRecipes:
         assert response.status_code == 200
         for category in categories:
             assert category in categories
+
+
+@pytest.mark.django_db
+class TestRateRecipe:
+    def test_add_rating(self, client, recipe, signed_up_credentials, login_to_site):
+        response = client.post(f"/view_recipe/{recipe.id}/")
+        assert response.status_code == 200
+        assert not recipe.rating_set.exists()
+        response = client.post(f"/view_recipe/{recipe.id}/", data={"action": "Add Rating", "rating": 5})
+        assert response.status_code == 200
+        assert response.request["PATH_INFO"] == f"/view_recipe/{recipe.id}/"
+        assert response.context["rating"] == 5
+
+    def test_edit_rating(self, client, recipe, signed_up_credentials, login_to_site):
+        response = client.post(f"/view_recipe/{recipe.id}/", data={"action": "Add Rating", "rating": 5})
+        assert response.status_code == 200
+        assert response.request["PATH_INFO"] == f"/view_recipe/{recipe.id}/"
+        assert response.context["rating"] == 5
+        response = client.post(f"/view_recipe/{recipe.id}/", data={"action": "Add Rating", "rating": 3})
+        assert response.status_code == 200
+        assert response.request["PATH_INFO"] == f"/view_recipe/{recipe.id}/"
+        assert response.context["rating"] == 3
