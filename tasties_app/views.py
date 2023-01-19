@@ -3,9 +3,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from django.shortcuts import redirect, render
-from tasties_app.models import Category, Recipe, Comment
-from .forms import CreateUserForm
+from tasties_app.models import Category, Recipe, Comment, Ingredient
+
+from tasties_app.forms import CreateUserForm, CreateRecipeForm
 from django.core.exceptions import ObjectDoesNotExist
+from django.forms import inlineformset_factory
 
 
 def base(request):
@@ -123,3 +125,40 @@ def add_comment(request, recipe):
                             comment_text=comment_value)
     comment_input.full_clean()
     comment_input.save()
+
+
+@login_required(login_url='login')
+def create_recipe(request):
+    recipe = Recipe(author_id=request.user)
+    IngredientFormSet = inlineformset_factory(Recipe,
+                                              Ingredient,
+                                              fields=('description', 'measurement_unit', 'amount'),
+                                              min_num=1,
+                                              validate_min=True,
+                                              extra=9)
+
+    if request.method == 'POST':
+        recipe_form = CreateRecipeForm(request.POST, request.FILES, instance=recipe)
+        ingredient_formset = IngredientFormSet(request.POST, instance=recipe)
+        if recipe_form.is_valid():
+            recipe = recipe_form.save(commit=False)
+            if ingredient_formset.is_valid():
+                recipe = recipe_form.save()
+                if not recipe.recipe_picture:
+                    recipe.recipe_picture = 'images/tasties_logo_round.png'
+                    recipe.save()
+                ingredient_formset.save()
+                return redirect(f'/view_recipe/{recipe.id}/')
+            else:
+                for ingredient_form_errors in ingredient_formset.errors:
+                    for error_message in ingredient_form_errors.values():
+                        messages.error(request, error_message)
+        else:
+            for error_message in recipe_form.errors.values():
+                messages.error(request, error_message)
+    else:
+        recipe_form = CreateRecipeForm(instance=recipe)
+        ingredient_formset = IngredientFormSet(instance=recipe)
+
+    context = {'recipe_form': recipe_form, 'ingredient_formset': ingredient_formset}
+    return render(request, 'tasties_app/create_recipe.html', context)

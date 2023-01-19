@@ -10,16 +10,26 @@ def comment():
     """
     in this generate function we create User, Category and Recipe
     objects to fill Comment class and used to test
-     """
+    """
 
-    user = User.objects.create_user(username='test_user', password='password')
-    recipe = Recipe(title='Test Recipe1', author_id=user, description='Test Description1',
-                    directions='Test Directions1', publication_date=timezone.now(), minutes_to_make=1,
-                    recipe_picture='recipe.jpeg')
+    user = User.objects.create_user(username="test_user", password="password")
+    recipe = Recipe(
+        title="Test Recipe1",
+        author_id=user,
+        description="Test Description1",
+        directions="Test Directions1",
+        publication_date=timezone.now(),
+        minutes_to_make=1,
+        recipe_picture="recipe.jpeg",
+    )
     recipe.clean_fields()
     recipe.save()
-    comment = Comment(author_id=user, recipe_id=recipe, publication_date=timezone.now(),
-                      comment_text='test comment')
+    comment = Comment(
+        author_id=user,
+        recipe_id=recipe,
+        publication_date=timezone.now(),
+        comment_text="test comment",
+    )
     comment.clean_fields()
     comment.save()
 
@@ -181,7 +191,9 @@ def recipe():
 
 @pytest.fixture
 def signed_up_credentials():
-    user = User.objects.create_user(username=VALID_USER, email=VALID_EMAIL, password=VALID_PASSWORD)
+    user = User.objects.create_user(
+        username=VALID_USER, email=VALID_EMAIL, password=VALID_PASSWORD
+    )
     user.save()
 
 
@@ -221,3 +233,49 @@ def recipe_test():
     recipe1.categories.add(category1)
     recipe1.save()
     return recipe1
+
+
+@pytest.fixture()
+def form_data():
+    """
+    This fixture creates raw recipe form data to be passed
+    by POST request when testing recipe creation
+
+    Returns:
+        dictionary: recipe raw data
+    """
+    form_data = {
+        "title": "Valid title",
+        "description": "Valid description",
+        "directions": "Valid directions",
+        "minutes_to_make": 1,
+        "categories": {1, 2},
+    }
+    return form_data
+
+
+@pytest.fixture()
+def formset_data():
+    """
+    This fixture creates raw ingredient formset data to be passed
+    by POST request when testing recipe creation
+
+    Returns:
+        _type_: _description_
+    """
+    formset_data = {
+            "ingredient_set-TOTAL_FORMS": 10,
+            "ingredient_set-INITIAL_FORMS": 0,
+            "ingredient_set-MIN_NUM_FORMS": 1,
+            "ingredient_set-MAX_NUM_FORMS": 1000,
+            "ingredient_set-0-description": "Valid Ingredient",
+            "ingredient_set-0-measurement_unit": "Whole",
+            "ingredient_set-0-amount": 1,
+            "ingredient_set-0-id": 1,
+    }
+    for i in range(1, 10):
+        formset_data["ingredient_set-" + str(i) + "-description"] = "Valid Ingredient"
+        formset_data["ingredient_set-" + str(i) + "-measurement_unit"] = "Whole"
+        formset_data["ingredient_set-" + str(i) + "-amount"] = 1
+        formset_data["ingredient_set-" + str(i) + "-id"] = i + 1
+    return formset_data
