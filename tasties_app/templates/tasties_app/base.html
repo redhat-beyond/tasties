@@ -44,10 +44,13 @@
 
       {% if user.is_authenticated %}
           <!-- Search -->
+          <form method='POST' action="{% url 'search' %}">
+          {% csrf_token %}             
           <div class="form-group">
             <span class="input-group-append">
               <input
                 type="text"
+                name="search"
                 class="form-control"
                 placeholder="Search"
                 id="search"
@@ -60,7 +63,7 @@
               </button>
             </span>
           </div>
-
+        </form>
           <!-- Profile -->
           <div class="dropdown">
             <button
@@ -71,7 +74,7 @@
               {% bs_icon 'person-fill' %} Hello, {{ user.username }}
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="{% url 'create_recipe' %}"">Add recipe</a>
+              <a class="dropdown-item" href="{% url 'create_recipe' %}">Add recipe</a>
               <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>
           </div>
