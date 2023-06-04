@@ -1,6 +1,10 @@
 # Tasties
 ![tasties](./tasties_app/static/images/tasties_logo_round.png)
 
+### Go live:
+The app is deployed!
+[Click here](http://gilshechter.pythonanywhere.com/)
+
 ### Introduction
 Welcome to Tasties! We're creating an open-source platform where people can share and discover recipes,
 and get the most out of their available ingredients. On Tasties, users will be able to see, comment on and rate
